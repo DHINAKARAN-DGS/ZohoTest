@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/News"
+        android:icon="@drawable/news_menu_menu"
+        android:title="Home"
+        app:cnb_iconColor="@color/white"/>
+    <item
+        android:id="@+id/Weather"
+        android:icon="@drawable/weather_menu_icon"
+        android:title="Activity"
+        app:cnb_iconColor="@color/white"/>
+</menu>
