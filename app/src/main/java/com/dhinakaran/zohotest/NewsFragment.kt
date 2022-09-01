@@ -21,12 +21,12 @@ import org.json.JSONObject
 
 class NewsFragment : Fragment() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
     val newsdata = mutableListOf<NewsDataModel>()
-    lateinit var dataArray: JSONArray
     val adapters = NewsAdapter(newsdata)
 
     val limit = 1
@@ -49,61 +49,70 @@ class NewsFragment : Fragment() {
         linearLayoutManager = LinearLayoutManager(requireContext())
         recyclerView?.layoutManager = linearLayoutManager
 
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0) {
-                    val vicount = linearLayoutManager.childCount
-                    val pastVisibleItemCount =
-                        linearLayoutManager.findFirstCompletelyVisibleItemPosition()
-                    val total = adapters.itemCount
-                    if (!isLoading) {
-                        if ((vicount + pastVisibleItemCount) >= total) {
-                            page++
-                            getPage()
-                        }
-                    }
-                }
-                super.onScrolled(recyclerView, dx, dy)
-            }
-        })
+//        TODO("Pagination")
+
+//        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                if (dy > 0) {
+//                    val vicount = linearLayoutManager.childCount
+//                    val pastVisibleItemCount =
+//                        linearLayoutManager.findFirstCompletelyVisibleItemPosition()
+//                    val total = adapters.itemCount
+//                    if (!isLoading) {
+//                        if ((vicount + pastVisibleItemCount) >= total) {
+//                            page++
+//                            getPage()
+//                        }
+//                    }
+//                }
+//                super.onScrolled(recyclerView, dx, dy)
+//            }
+//        })
 
 
         return view
     }
 
+    //Pagination:
     fun getPage() {
         isLoading = true
         val start: Int = (page - 1) * limit
         val end: Int = (page) * limit
-        for (i in start..end) {
-            val jsonObject = dataArray.getJSONObject(i)
-            val authorName = jsonObject.optString("author")
-            val title = jsonObject.optString("title")
-            val url = jsonObject.optString("url")
-            val imageUrl = jsonObject.optString("author")
-            val description = jsonObject.optString("content")
-            println(authorName + " " + title + " " + url + " " + imageUrl)
-            newsdata.add(i, NewsDataModel(title, imageUrl, description, url))
-            adapters.notifyDataSetChanged()
-        }
         isLoading = false
-
     }
 
     fun getData() {
         val queue: RequestQueue = Volley.newRequestQueue(requireContext())
-        val url: String = "https://inshorts.deta.dev/news?category=all"
+        val url = "https://inshorts.deta.dev/news?category=all"
 
         val request = JsonObjectRequest(Request.Method.GET, url, null, { response ->
             println(response)
             val jsonArray = response.optJSONArray("data")
             println(jsonArray)
-            dataArray = jsonArray
-            getPage()
+            for (i in 0 until jsonArray.length()) {
+                val jsonObject = jsonArray.getJSONObject(i)
+                val authorName = jsonObject.optString("author")
+                val title = jsonObject.optString("title")
+                val readMoreUrl = jsonObject.optString("readMoreUrl")
+                val url = jsonObject.optString("url")
+                val imageUrl = jsonObject.optString("imageUrl")
+                val description =
+                    "[" + jsonObject.optString("date") + "," + jsonObject.optString("time") + "] " + jsonObject.optString(
+                        "content"
+                    )
+                println(authorName + " " + title + " " + readMoreUrl + " " + imageUrl)
+                newsdata.add(i, NewsDataModel(title, imageUrl, description, readMoreUrl, url))
+                adapters.notifyDataSetChanged()
+            }
 
         }, { error ->
-            Toast.makeText(requireContext(), "Fail to get response", Toast.LENGTH_SHORT)
+            Toast.makeText(
+                requireContext(),
+                "Fail to get response " + error.message,
+                Toast.LENGTH_SHORT
+            )
                 .show()
+            getData()
         })
         queue.add(request)
     }
