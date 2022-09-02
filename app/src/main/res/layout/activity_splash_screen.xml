@@ -15,7 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/zoho_logo" />
+        app:srcCompat="@drawable/zoho_logo"
+        android:contentDescription="@string/todo" />
 
     <ProgressBar
         android:id="@+id/progressBar"

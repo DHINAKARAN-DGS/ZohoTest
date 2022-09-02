@@ -12,7 +12,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     override fun onCreate(db: SQLiteDatabase) {
         val query = ("CREATE TABLE " + TABLE_NAME + " ("
                 + ID_COL + " INTEGER PRIMARY KEY, " +
-                JSON_COl + " TEXT," + ")")
+                JSON_COl + " TEXT" + ")")
 
         db.execSQL(query)
     }

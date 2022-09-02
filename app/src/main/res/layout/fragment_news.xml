@@ -12,14 +12,31 @@
         android:orientation="vertical"
         android:layout_height="wrap_content">
 
+        <android.widget.SearchView
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+             android:background="@drawable/news_background"
+            android:layout_margin="16dp"
+            android:backgroundTint="@color/white"
+            android:paddingStart="20dp"
+            android:layout_height="50dp"
+            android:drawableStart="@drawable/ic_baseline_search_24"
+            android:hint="@string/search"
+            tools:ignore="RtlSymmetry" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/news_rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
         <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:id="@+id/progressBarRV"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
 
     </LinearLayout>
 

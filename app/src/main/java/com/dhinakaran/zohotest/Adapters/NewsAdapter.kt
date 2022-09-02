@@ -6,25 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dhinakaran.zohotest.Models.NewsDataModel
-import com.dhinakaran.zohotest.NewsFragment
 import com.dhinakaran.zohotest.R
 import com.dhinakaran.zohotest.WebViewActivity
 
 class NewsAdapter(private val newsList: List<NewsDataModel>) :
     RecyclerView.Adapter<NewsAdapter.VIEWHOLDER>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsAdapter.VIEWHOLDER {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VIEWHOLDER {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.news_container, parent, false)
         return VIEWHOLDER(view)
     }
 
-    override fun onBindViewHolder(holder: NewsAdapter.VIEWHOLDER, position: Int) {
+    override fun onBindViewHolder(holder: VIEWHOLDER, position: Int) {
         val title = newsList[position].title
         val description = newsList[position].description
         val thumbnail = newsList[position].thumbnail
